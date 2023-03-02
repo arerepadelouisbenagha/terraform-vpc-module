@@ -2,7 +2,7 @@
 General open source VPC Module for TSR bootcamp.
 
 # Global terraform versions
- | Name              Version
+ | Name            | Version           |
  |-----------------|-------------------|
  | AWS             | 4.53.0            |
 
