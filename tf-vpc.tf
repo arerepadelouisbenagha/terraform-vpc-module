@@ -102,3 +102,33 @@ resource "aws_route_table_association" "public" {
   subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = aws_route_table.public[0].id
 }
+
+resource "aws_security_group" "sg" {
+  count = var.create_vpc || var.security_group ? 1 : 0
+
+  name        = var.security_group_name
+  description = var.description
+  vpc_id      = aws_vpc.main[0].id
+
+  dynamic "ingress" {
+    for_each = var.security_group_ingress
+    content {
+      description = lookup(ingress.value, "description", "")
+      from_port   = lookup(ingress.value, "from_port", 0)
+      to_port     = lookup(ingress.value, "to_port", 0)
+      protocol    = lookup(ingress.value, "protocol", -1)
+      cidr_blocks = compact(split(",", lookup(ingress.value, "cidr_blocks", "")))
+    }
+  }
+
+  dynamic "egress" {
+    for_each = var.security_group_egress
+    content {
+      description = lookup(egress.value, "description", "")
+      from_port   = lookup(egress.value, "from_port", 0)
+      to_port     = lookup(egress.value, "to_port", 0)
+      protocol    = lookup(egress.value, "protocol", "-1")
+      cidr_blocks = compact(split(",", lookup(egress.value, "cidr_blocks", "")))
+    }
+  }
+}
