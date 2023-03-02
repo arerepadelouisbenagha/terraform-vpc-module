@@ -1,5 +1,5 @@
 module "vpc" {
-  source                  = "../"
+  source                  = "git::https://github.com/bootcampus-elitesolutionsit/terraform-vpc-module.git?ref=v1.0.0"
   name                    = "my-vpc"
   security_group_name     = "my-sg"
   description             = "security for infrastructure"
