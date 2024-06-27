@@ -17,7 +17,7 @@ resource "aws_vpc" "main" {
 
 # Subnet - Public
 resource "aws_subnet" "public" {
-  count = var.create_vpc && length(var.public_subnets) > 0 && length(var.private_subnets) >= length(var.azs) ? length(var.public_subnets) : 0
+  count = var.create_vpc && length(var.public_subnets) > 0 && length(var.public_subnets) >= length(var.azs) ? length(var.public_subnets) : 0
 
   vpc_id                  = element(aws_vpc.main.*.id, count.index)
   cidr_block              = element(var.public_subnets, count.index)
